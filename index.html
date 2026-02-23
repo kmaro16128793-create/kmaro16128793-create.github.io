@@ -22,6 +22,7 @@
         [class*="btn-gold"],a[class*="border"]{width:min(280px,85vw)!important;text-align:center!important;min-height:48px!important;display:flex!important;align-items:center!important;justify-content:center!important}
         [class*="hero"] img,[class*="hero"] [class*="rounded-full"]{max-width:min(220px,70vw)!important;height:auto!important}
         [class*="grid-cols-3"],[class*="grid-cols-4"]{grid-template-columns:1fr!important}
+        [class*="grid-cols-2"]{grid-template-columns:repeat(2,1fr)!important}
         [class*="swiper-slide"],[class*="carousel-item"]{width:85vw!important;max-width:85vw!important}
         [class*="swiper"],[class*="carousel"]{overflow:hidden!important;width:100%!important}
         [class*="card"],[class*="Card"]{width:100%!important;max-width:100%!important}
@@ -31,12 +32,7 @@
         h3{font-size:clamp(1rem,4.5vw,1.3rem)!important}
         footer [class*="grid"]{grid-template-columns:1fr!important;text-align:center!important}
         footer [class*="flex"]{justify-content:center!important;flex-wrap:wrap!important}
-        footer a[class*="rounded-full"]{display:none!important}
         input,textarea,select{font-size:16px!important;width:100%!important}
-        #contact .grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;max-width:100%!important}
-        #contact a{min-height:90px!important;padding:12px 8px!important}
-        #contact a span{max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
-        #contact [class*="rounded-2xl"][class*="border"]{display:none!important}
       }
       @media(max-width:480px){
         h1{font-size:clamp(1.4rem,8.5vw,2rem)!important}
@@ -44,16 +40,53 @@
         section{padding:2rem .75rem!important}
         [class*="btn-gold"],a[class*="border"]{width:90vw!important}
       }
+
+      /* ── Cache les petites icônes rondes du footer ── */
+      footer a[class*="rounded-full"]{display:none!important}
+
+      /* ── Cache la zone adresse (📍 Saint-Ouen) entre boutons et footer ── */
+      #contact [class*="rounded-2xl"]{display:none!important}
+
+      /* ── OR BRILLANT (inspiré couleur logo #D2AA55) ── */
       @keyframes goldShine{0%,100%{filter:brightness(1) saturate(1)}50%{filter:brightness(1.2) saturate(1.15)}}
       [class*="text-[#D4A853]"]{color:#E8B840!important;text-shadow:0 0 14px rgba(232,184,64,.5),0 0 4px rgba(200,150,20,.3)}
       [class*="bg-[#D4A853]"]{background:linear-gradient(135deg,#B8841E 0%,#F5CB52 38%,#E8B840 55%,#B8841E 100%)!important;box-shadow:0 4px 22px rgba(232,184,64,.45)!important}
       [class*="border-[#D4A853]"]{border-color:#E8B840!important;box-shadow:0 0 8px rgba(232,184,64,.25)}
       [class*="text-[#D4A853]"]{animation:goldShine 4s ease-in-out infinite}
     </style>
-    <script type="module" crossorigin src="./assets/index-CeUPF6HE.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-B-nU78Ji.css">
+    <script type="module" crossorigin src="./assets/index-Cw2mO1Jq.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DXVcRaju.css">
   </head>
   <body>
     <div id="root"></div>
+    <script>
+    (function(){
+      var t=setInterval(function(){
+        var tk=document.querySelector('a[href*="tiktok.com"]');
+        if(!tk)return;
+        clearInterval(t);
+        var wrap=tk.parentNode;
+        var igSvg='<svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>';
+        function mk(href,handle){
+          var a=document.createElement('a');
+          a.href=href;a.target='_blank';a.rel='noopener noreferrer';
+          /* Copie les classes du bouton TikTok (même design) sans les classes d'animation */
+          a.className=tk.className.split(' ').filter(function(c){
+            return !/^opacity-/.test(c)&&!/^-?translate/.test(c)&&c!=='';
+          }).join(' ');
+          a.style.opacity='1';
+          a.style.transform='none';
+          a.style.background='linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)';
+          a.innerHTML=tk.innerHTML
+            .replace(/<svg[\s\S]*?<\/svg>/,igSvg)
+            .replace(/TikTok/g,'Instagram')
+            .replace(/@minabrunchtraiteur/g,handle);
+          return a;
+        }
+        wrap.appendChild(mk('https://www.instagram.com/minatraiteur93','@minatraiteur93'));
+        wrap.appendChild(mk('https://www.instagram.com/minatraiteurevents','@minatraiteurevents'));
+      },300);
+    })();
+    </script>
   </body>
 </html>
