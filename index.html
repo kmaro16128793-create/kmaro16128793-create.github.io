@@ -59,10 +59,11 @@
 
       /* ── Fix mobile : overflow cartes + form ── */
       @media(max-width:768px){
-        /* Supprime le slide-in translate qui déborde les cartes (ex: -translate-x-10) */
-        /* Cible uniquement les éléments de section, pas le menu nav */
-        section [class*="-translate-x-"]{transform:none!important}
-        section [class*="-translate-y-"]{transform:none!important}
+        /* Supprime UNIQUEMENT les slide-in numériques (ex: -translate-x-10, pas -translate-x-1/2) */
+        section [class~="-translate-x-10"],section [class~="-translate-x-8"],
+        section [class~="-translate-x-6"],section [class~="-translate-x-4"],
+        section [class~="-translate-y-10"],section [class~="-translate-y-8"],
+        section [class~="-translate-y-6"],section [class~="-translate-y-4"]{transform:none!important}
         /* Transitions rapides pour les entrées en section (pas le nav) */
         section [class*="duration-1000"],section [class*="duration-700"]{
           transition-duration:100ms!important;
