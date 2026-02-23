@@ -45,52 +45,56 @@
       @keyframes goldShine{0%,100%{opacity:1}50%{opacity:.88}}
       h1,h2,h3{animation:goldShine 4s ease-in-out infinite;will-change:opacity}
 
-      /* ── Performance + clip overflow bords ── */
+      /* ── Performance + clip overflow ── */
       section{contain:paint;overflow-x:hidden}
-      /* ── Boutons hero : taille réduite sur mobile ── */
-      @media(max-width:768px){
-        .btn-gold-filled,.btn-gold{
-          padding-top:10px!important;
-          padding-bottom:10px!important;
-          font-size:0.78rem!important;
-          letter-spacing:.12em!important;
-        }
-        /* Réduit le mt-12 (48px) excessif sur les boutons hero */
-        [class~="mt-12"]{margin-top:1.25rem!important}
-        [class~="mt-16"]{margin-top:1.5rem!important}
-        /* Hero section : moins de padding vertical */
-        section:first-of-type{padding-top:5rem!important;padding-bottom:3rem!important}
-      }
 
-      /* ── Cache les icônes réseaux dans le footer (rangée WhatsApp/TikTok/etc) ── */
+      /* ── Cache les icônes réseaux dans le footer ── */
       footer [class*="space-x"]{display:none!important}
 
-      /* ── Grille services — empêche overflow mobile ── */
       @media(max-width:768px){
+
+        /* ── Hero : compacte, pas de vide en bas (100svh exclut URL bar iOS) ── */
+        section:first-of-type,.min-h-screen{min-height:100svh!important}
+        section:first-of-type img:not([class*="rounded-full"]){
+          max-height:190px!important;width:auto!important;margin:0 auto!important;display:block!important
+        }
+        /* "DÉCOUVRIR ↓" : centré et visible */
+        section:first-of-type [class*="absolute"][class*="bottom"]{
+          position:relative!important;margin-top:1.5rem!important;text-align:center!important
+        }
+
+        /* ── Boutons hero : compacts ── */
+        .btn-gold-filled,.btn-gold{
+          padding:9px 1.5rem!important;
+          font-size:0.75rem!important;
+          letter-spacing:.13em!important;
+          min-height:40px!important;
+        }
+        [class~="mt-12"]{margin-top:1rem!important}
+
+        /* ── Services : 1 colonne sur mobile (2 = trop étroit) ── */
+        #services [class*="grid"]{grid-template-columns:1fr!important}
+        #services [class*="grid"] > *{width:100%!important}
+
+        /* ── Grille services cards — empêche overflow ── */
         [class*="grid-cols-2"]{grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow:hidden}
         [class*="grid-cols-2"] > *{min-width:0;overflow:hidden}
-      }
 
-      /* ── Fix mobile : overflow cartes + form ── */
-      @media(max-width:768px){
-        /* Supprime UNIQUEMENT les slide-in numériques (ex: -translate-x-10, pas -translate-x-1/2) */
+        /* ── Slide-in animations : supprime décalage latéral ── */
         section [class~="-translate-x-10"],section [class~="-translate-x-8"],
-        section [class~="-translate-x-6"],section [class~="-translate-x-4"],
-        section [class~="-translate-y-10"],section [class~="-translate-y-8"],
-        section [class~="-translate-y-6"],section [class~="-translate-y-4"]{transform:none!important}
-        /* Transitions rapides pour les entrées en section (pas le nav) */
+        section [class~="-translate-y-10"],section [class~="-translate-y-8"]{transform:none!important}
         section [class*="duration-1000"],section [class*="duration-700"]{
-          transition-duration:100ms!important;
-          transition-delay:0ms!important;
+          transition-duration:100ms!important;transition-delay:0ms!important
         }
-        /* Formulaire : champs en colonne unique sur mobile */
-        section form [class*="grid-cols-2"],
-        section form [class*="grid-cols-"]{
-          grid-template-columns:1fr!important;
-        }
-        /* Grille form+social en colonne dans #contact */
-        #contact [class*="grid"]{
-          grid-template-columns:1fr!important;
+
+        /* ── Formulaire : colonne unique, padding confortable ── */
+        #contact [class*="grid"]{grid-template-columns:1fr!important}
+        section form [class*="grid-cols-"]{grid-template-columns:1fr!important}
+        section form{padding:1.25rem!important}
+        section form label{font-size:0.8rem!important;margin-bottom:0.25rem!important;display:block!important}
+        section form input,section form select,section form textarea{
+          padding:0.6rem 0.75rem!important;font-size:15px!important;
+          border-radius:6px!important;margin-bottom:0.75rem!important
         }
       }
     </style>
