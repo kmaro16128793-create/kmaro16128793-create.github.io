@@ -27,58 +27,33 @@
     }
     </script>
     <style>
-      /* ── Base ── */
       *,*::before,*::after{box-sizing:border-box}
       html,body{overflow-x:hidden;max-width:100vw;-webkit-text-size-adjust:100%}
       body,#root,#root>*{overflow-x:hidden!important;max-width:100vw!important}
-
-      /* ── Cache la rangée d'icônes footer ── */
       footer [class*="space-x"]{display:none!important}
-
-      /* ── Performance + clip overflow ── */
       section{contain:paint;overflow-x:hidden}
-
       @media(max-width:768px){
-        /* ── Hero : hauteur plein écran sans URL bar iOS ── */
         section:first-of-type,.min-h-screen{min-height:100svh!important}
-        section:first-of-type img:not([class*="rounded-full"]){
-          max-height:200px!important;width:auto!important;margin:0 auto!important;display:block!important
-        }
-
-        /* ── Services : 1 colonne ── */
+        section:first-of-type img:not([class*="rounded-full"]){max-height:200px!important;width:auto!important;margin:0 auto!important;display:block!important}
         #services [class*="grid"]{grid-template-columns:1fr!important}
         #services [class*="grid"] > *{width:100%!important}
         #services [class~="mb-16"],#services [class~="mb-12"]{margin-bottom:1.25rem!important}
         #services{padding-top:2rem!important}
-
-        /* ── Infos : 1 colonne ── */
         #infos [class*="grid"]{grid-template-columns:1fr!important}
         #infos [class*="grid"] > *{width:100%!important}
-
-        /* ── Formulaire ── */
         section form [class*="grid-cols-"]{grid-template-columns:1fr!important}
         section form{padding:1.25rem!important}
         section form label{font-size:0.8rem!important;margin-bottom:0.25rem!important;display:block!important}
-        section form input,section form select,section form textarea{
-          padding:0.6rem 0.75rem!important;font-size:15px!important;
-          border-radius:6px!important;margin-bottom:0.75rem!important
-        }
-        section form button,section form [class*="btn"]{
-          padding:9px 0.75rem!important;letter-spacing:0.05em!important;
-          font-size:0.72rem!important;width:100%!important
-        }
-
-        /* ── Footer grid ── */
+        section form input,section form select,section form textarea{padding:0.6rem 0.75rem!important;font-size:15px!important;border-radius:6px!important;margin-bottom:0.75rem!important}
+        section form button,section form [class*="btn"]{padding:9px 0.75rem!important;letter-spacing:0.05em!important;font-size:0.72rem!important;width:100%!important}
         footer [class*="grid"]{grid-template-columns:1fr!important;text-align:center!important}
         footer [class*="flex"]{justify-content:center!important;flex-wrap:wrap!important}
         input,textarea,select{font-size:16px!important;width:100%!important}
-
-        /* ── Fix jank horizontal : désactive les transitions Tailwind ── */
         [class*="transition"],[class*="duration-"]{transition:none!important}
       }
     </style>
-    <script type="module" crossorigin src="./assets/index-BpxvfJaw.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BxRQ8y6y.css">
+    <script type="module" crossorigin src="./assets/index-6QVxEQRg.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DbY0FgVd.css">
   </head>
   <body>
     <div id="root"></div>
