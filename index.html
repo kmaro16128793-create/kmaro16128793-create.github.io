@@ -41,10 +41,13 @@
         [class*="btn-gold"],a[class*="border"]{width:90vw!important}
       }
 
-      /* ── OR BRILLANT — texte et bordures uniquement, pas les fonds ── */
-      @keyframes goldShine{0%,100%{filter:brightness(1) saturate(1)}50%{filter:brightness(1.2) saturate(1.15)}}
-      [class*="text-[#D4AF37]"]{color:#F0C840!important;text-shadow:0 0 12px rgba(240,200,64,.5);animation:goldShine 5s ease-in-out infinite}
-      [class*="border-[#D4AF37]"]{border-color:#F0C840!important}
+      /* ── OR BRILLANT — animation shimmer uniquement, sans changer les couleurs ── */
+      @keyframes goldShine{0%,100%{filter:brightness(1) saturate(1)}50%{filter:brightness(1.18) saturate(1.12)}}
+      [class*="text-[#D4AF37]"]:not([class*="from-[#D4AF37]"] *):not([class*="bg-[#D4AF37]"] *){
+        animation:goldShine 5s ease-in-out infinite;
+        text-shadow:0 0 10px rgba(212,175,55,.35)
+      }
+      [class*="border-[#D4AF37]"]{filter:drop-shadow(0 0 4px rgba(212,175,55,.4))}
 
       /* ── Grille services — empêche overflow mobile ── */
       @media(max-width:768px){
