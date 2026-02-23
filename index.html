@@ -57,16 +57,15 @@
         [class*="grid-cols-2"] > *{min-width:0;overflow:hidden}
       }
 
-      /* ── Fix mobile : animations d'entrée instantanées, plus de décalage ── */
+      /* ── Fix mobile : overflow cartes + form ── */
       @media(max-width:768px){
         /* Supprime le slide-in translate qui déborde les cartes (ex: -translate-x-10) */
-        [class*="-translate-x-"]{transform:none!important}
-        [class*="-translate-y-"]{transform:none!important}
-        /* Rend immédiatement visibles les éléments en attente d'animation */
-        [class*="opacity-0"]{opacity:1!important}
-        /* Transitions ultra-rapides (hover conservé, juste les entrées accélérées) */
-        [class*="duration-1000"],[class*="duration-700"],[class*="duration-500"]{
-          transition-duration:80ms!important;
+        /* Cible uniquement les éléments de section, pas le menu nav */
+        section [class*="-translate-x-"]{transform:none!important}
+        section [class*="-translate-y-"]{transform:none!important}
+        /* Transitions rapides pour les entrées en section (pas le nav) */
+        section [class*="duration-1000"],section [class*="duration-700"]{
+          transition-duration:100ms!important;
           transition-delay:0ms!important;
         }
         /* Formulaire : champs en colonne unique sur mobile */
@@ -74,8 +73,7 @@
         section form [class*="grid-cols-"]{
           grid-template-columns:1fr!important;
         }
-        /* Grille form+social en colonne */
-        #contact [class*="grid-cols-1"][class*="lg:grid-cols-2"],
+        /* Grille form+social en colonne dans #contact */
         #contact [class*="grid"]{
           grid-template-columns:1fr!important;
         }
