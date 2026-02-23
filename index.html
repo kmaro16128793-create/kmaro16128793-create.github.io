@@ -53,5 +53,126 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <style>
+      @media (max-width: 768px) {
+        #contact .grid,
+        #contact [class*="grid"] {
+          display: grid !important;
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 12px !important;
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+        #contact a[href] {
+          position: relative !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: center !important;
+          min-height: 140px !important;
+          padding: 16px 12px !important;
+          background: linear-gradient(145deg, #1C1409 0%, #0D0A05 100%) !important;
+          border: 1px solid rgba(212, 168, 83, 0.2) !important;
+          border-radius: 16px !important;
+          text-decoration: none !important;
+          overflow: hidden !important;
+          transition: all 0.3s ease !important;
+        }
+        #contact a[href]::before {
+          content: '' !important;
+          position: absolute !important;
+          top: 0 !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+          width: 60% !important;
+          height: 1px !important;
+          background: linear-gradient(90deg, transparent, rgba(212, 168, 83, 0.5), transparent) !important;
+        }
+        #contact a[href]:active {
+          transform: scale(0.98) !important;
+          border-color: rgba(212, 168, 83, 0.4) !important;
+        }
+        #contact a[href] > *:first-child {
+          width: 48px !important;
+          height: 48px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          background: linear-gradient(135deg, rgba(212, 168, 83, 0.1) 0%, rgba(212, 168, 83, 0.03) 100%) !important;
+          border: 1.5px solid rgba(212, 168, 83, 0.25) !important;
+          border-radius: 50% !important;
+          margin-bottom: 12px !important;
+        }
+        #contact a[href] svg { width: 22px !important; height: 22px !important; }
+        #contact a[href] span:nth-child(2) {
+          font-family: 'Playfair Display', serif !important;
+          font-size: 0.75rem !important;
+          font-weight: 500 !important;
+          color: #E8D5A3 !important;
+          letter-spacing: 0.1em !important;
+          text-transform: uppercase !important;
+          margin-bottom: 4px !important;
+        }
+        #contact a[href] span:last-child {
+          font-size: 0.65rem !important;
+          color: rgba(232, 213, 163, 0.5) !important;
+          max-width: 90% !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+          white-space: nowrap !important;
+        }
+        #contact a[href*="wa.me"] {
+          background: linear-gradient(145deg, #0f1a12 0%, #0D0A05 100%) !important;
+          border-color: rgba(37, 211, 102, 0.15) !important;
+        }
+        #contact a[href*="wa.me"] > *:first-child {
+          background: linear-gradient(135deg, rgba(37, 211, 102, 0.1) 0%, rgba(37, 211, 102, 0.03) 100%) !important;
+          border-color: rgba(37, 211, 102, 0.25) !important;
+        }
+        #contact a[href*="wa.me"] svg { fill: #25D366 !important; }
+        #contact a[href*="tiktok"] {
+          background: linear-gradient(145deg, #111 0%, #0D0A05 100%) !important;
+          border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        #contact a[href*="tiktok"] > *:first-child {
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+          border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+        #contact a[href*="tiktok"] svg { fill: #ffffff !important; }
+        #contact a.insta-luxe {
+          background: linear-gradient(145deg, #1C1409 0%, #1a1012 100%) !important;
+          border-color: rgba(220, 39, 67, 0.12) !important;
+        }
+        #contact a.insta-luxe > *:first-child {
+          background: linear-gradient(135deg, rgba(240, 148, 51, 0.08) 0%, rgba(220, 39, 67, 0.06) 50%, rgba(188, 24, 136, 0.03) 100%) !important;
+          border-color: rgba(220, 39, 67, 0.2) !important;
+        }
+      }
+    </style>
+
+    <script>
+    (function(){
+      var timer = setInterval(function() {
+        var tiktok = document.querySelector('a[href*="tiktok.com"]');
+        if (!tiktok) return;
+        clearInterval(timer);
+        var container = tiktok.parentNode;
+        if (!container) return;
+        var svg = '<svg width="22" height="22" viewBox="0 0 24 24"><defs><linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f09433"/><stop offset="25%" stop-color="#e6683c"/><stop offset="50%" stop-color="#dc2743"/><stop offset="75%" stop-color="#cc2366"/><stop offset="100%" stop-color="#bc1888"/></linearGradient></defs><path fill="url(#ig)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>';
+        function createBtn(href, label, handle) {
+          var a = document.createElement('a');
+          a.href = href;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.className = 'insta-luxe';
+          a.innerHTML = '<span>' + svg + '</span><span>' + label + '</span><span>' + handle + '</span>';
+          return a;
+        }
+        container.appendChild(createBtn('https://www.instagram.com/minatraiteur93', 'Instagram', '@minatraiteur93'));
+        container.appendChild(createBtn('https://www.instagram.com/minatraiteurevents', 'Instagram', 'Events'));
+      }, 400);
+    })();
+    </script>
   </body>
 </html>
