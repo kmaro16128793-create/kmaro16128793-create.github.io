@@ -45,8 +45,22 @@
       @keyframes goldShine{0%,100%{opacity:1}50%{opacity:.88}}
       h1,h2,h3{animation:goldShine 4s ease-in-out infinite;will-change:opacity}
 
-      /* ── Performance scroll — sections isolées GPU ── */
-      section{contain:paint}
+      /* ── Performance + clip overflow bords ── */
+      section{contain:paint;overflow-x:hidden}
+      /* ── Boutons hero : taille réduite sur mobile ── */
+      @media(max-width:768px){
+        .btn-gold-filled,.btn-gold{
+          padding-top:10px!important;
+          padding-bottom:10px!important;
+          font-size:0.78rem!important;
+          letter-spacing:.12em!important;
+        }
+        /* Réduit le mt-12 (48px) excessif sur les boutons hero */
+        [class~="mt-12"]{margin-top:1.25rem!important}
+        [class~="mt-16"]{margin-top:1.5rem!important}
+        /* Hero section : moins de padding vertical */
+        section:first-of-type{padding-top:5rem!important;padding-bottom:3rem!important}
+      }
 
       /* ── Cache les icônes réseaux dans le footer (rangée WhatsApp/TikTok/etc) ── */
       footer [class*="space-x"]{display:none!important}
