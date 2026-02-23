@@ -57,25 +57,27 @@
         [class*="grid-cols-2"] > *{min-width:0;overflow:hidden}
       }
 
-      /* ── Fix chevauchement formulaire + réseaux sur mobile ── */
+      /* ── Fix mobile : animations d'entrée instantanées, plus de décalage ── */
       @media(max-width:768px){
-        section:has(form)>div>[class*="flex"],
-        section:has(form)>div>[class*="grid"],
-        section:has(form)>[class*="flex"],
-        section:has(form)>[class*="grid"]{
-          flex-direction:column!important;
+        /* Supprime le slide-in translate qui déborde les cartes (ex: -translate-x-10) */
+        [class*="-translate-x-"]{transform:none!important}
+        [class*="-translate-y-"]{transform:none!important}
+        /* Rend immédiatement visibles les éléments en attente d'animation */
+        [class*="opacity-0"]{opacity:1!important}
+        /* Transitions ultra-rapides (hover conservé, juste les entrées accélérées) */
+        [class*="duration-1000"],[class*="duration-700"],[class*="duration-500"]{
+          transition-duration:80ms!important;
+          transition-delay:0ms!important;
+        }
+        /* Formulaire : champs en colonne unique sur mobile */
+        section form [class*="grid-cols-2"],
+        section form [class*="grid-cols-"]{
           grid-template-columns:1fr!important;
-          align-items:stretch!important;
         }
-        section form,section [class*="form"]{
-          width:100%!important;
-          max-width:100%!important;
-          position:static!important;
-          order:2;
-        }
-        section:has(form) [class*="flex"][class*="gap"]{
-          flex-direction:column!important;
-          gap:1rem!important;
+        /* Grille form+social en colonne */
+        #contact [class*="grid-cols-1"][class*="lg:grid-cols-2"],
+        #contact [class*="grid"]{
+          grid-template-columns:1fr!important;
         }
       }
     </style>
