@@ -91,6 +91,21 @@
           padding:0.6rem 0.75rem!important;font-size:15px!important;
           border-radius:6px!important;margin-bottom:0.75rem!important
         }
+        /* ── Formulaire : bouton compact (lettre-espacement réduit pour éviter coupure) ── */
+        section form button,section form [class*="btn-gold"]{
+          padding:9px 0.75rem!important;
+          letter-spacing:0.05em!important;
+          font-size:0.72rem!important;
+          width:100%!important;
+        }
+
+        /* ── Infos : 1 colonne sur mobile (texte illisible en 2 colonnes) ── */
+        #infos [class*="grid"]{grid-template-columns:1fr!important}
+        #infos [class*="grid"] > *{width:100%!important}
+
+        /* ── Services : réduit le gap entre titre et cartes ── */
+        #services [class~="mb-16"],#services [class~="mb-12"]{margin-bottom:1.25rem!important}
+        #services{padding-top:2rem!important}
       }
     </style>
     <script type="module" crossorigin src="./assets/index-Cw2mO1Jq.js"></script>
