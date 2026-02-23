@@ -41,9 +41,12 @@
         [class*="btn-gold"],a[class*="border"]{width:90vw!important}
       }
 
-      /* ── OR BRILLANT — shimmer sur textes, sans casser les icônes SVG ── */
-      @keyframes goldShine{0%,100%{opacity:1}50%{opacity:.85;filter:brightness(1.2)}}
-      h1,h2,h3{animation:goldShine 5s ease-in-out infinite}
+      /* ── OR BRILLANT — opacity seule, pas de filter (GPU-friendly, pas de repaint) ── */
+      @keyframes goldShine{0%,100%{opacity:1}50%{opacity:.88}}
+      h1,h2,h3{animation:goldShine 4s ease-in-out infinite;will-change:opacity}
+
+      /* ── Performance scroll — sections isolées GPU ── */
+      section{contain:paint}
 
       /* ── Cache les icônes réseaux dans le footer (rangée WhatsApp/TikTok/etc) ── */
       footer [class*="space-x"]{display:none!important}
@@ -52,6 +55,28 @@
       @media(max-width:768px){
         [class*="grid-cols-2"]{grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow:hidden}
         [class*="grid-cols-2"] > *{min-width:0;overflow:hidden}
+      }
+
+      /* ── Fix chevauchement formulaire + réseaux sur mobile ── */
+      @media(max-width:768px){
+        section:has(form)>div>[class*="flex"],
+        section:has(form)>div>[class*="grid"],
+        section:has(form)>[class*="flex"],
+        section:has(form)>[class*="grid"]{
+          flex-direction:column!important;
+          grid-template-columns:1fr!important;
+          align-items:stretch!important;
+        }
+        section form,section [class*="form"]{
+          width:100%!important;
+          max-width:100%!important;
+          position:static!important;
+          order:2;
+        }
+        section:has(form) [class*="flex"][class*="gap"]{
+          flex-direction:column!important;
+          gap:1rem!important;
+        }
       }
     </style>
     <script type="module" crossorigin src="./assets/index-Cw2mO1Jq.js"></script>
