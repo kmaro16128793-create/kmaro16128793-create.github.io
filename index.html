@@ -60,7 +60,9 @@
       /* ── Fix formulaire : débordement droite mobile ── */
       @media(max-width:1023px){
         #contact [class*="grid"] > *{min-width:0!important;max-width:100%!important}
-        #contact [class*="translate-x-10"],#contact [class*="-translate-x-10"]{transform:none!important;opacity:1!important}
+        #contact [class*="translate-x-10"],#contact [class*="-translate-x-10"]{transform:none!important;opacity:1!important;overflow:hidden!important}
+        #contact a[href*="instagram"]{border-radius:24px!important;overflow:hidden!important;max-width:100%!important;box-sizing:border-box!important;width:100%!important}
+        #contact [class*="p-6"][class*="gold-border"]{max-width:100%!important;width:100%!important;box-sizing:border-box!important;text-align:center!important;border-radius:16px!important}
         #contact [class*="p-8"],#contact form,#contact input,#contact textarea,#contact select,#contact [class*="btn-gold"],#contact button{width:100%!important;max-width:100%!important;box-sizing:border-box!important}
       }
 
