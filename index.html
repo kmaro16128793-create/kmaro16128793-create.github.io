@@ -44,6 +44,16 @@
       /* ── Cache les petites icônes rondes du footer ── */
       footer a[class*="rounded-full"]{display:none!important}
 
+      /* ── Footer réseaux : TikTok + Instagram uniquement ── */
+      footer div[class*="space-x"] a:nth-child(1),
+      footer div[class*="space-x"] a:nth-child(4){display:none!important}
+      footer div[class*="space-x"] a,
+      footer div[class*="space-x"] a[class*="border"]{width:52px!important;max-width:52px!important;height:52px!important;min-height:0!important;flex:0 0 52px!important;padding:0!important;border-radius:14px!important}
+      footer div[class*="space-x"] a:nth-child(2){background:#111!important;border:1px solid rgba(255,255,255,.2)!important}
+      footer div[class*="space-x"] a:nth-child(2) svg{fill:#fff!important}
+      footer div[class*="space-x"] a:nth-child(3){background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)!important;border-color:transparent!important}
+      footer div[class*="space-x"] a:nth-child(3) svg{fill:#fff!important}
+
       /* ── Cache zone adresse Saint-Ouen entre boutons et footer ── */
       #contact [class*="rounded-2xl"]{display:none!important}
 
