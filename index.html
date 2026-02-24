@@ -60,6 +60,30 @@
   <body>
     <div id="root"></div>
     <script>
+    // Fix colonnes Services mobile
+    (function(){
+      function fixServices(){
+        if(window.innerWidth > 800) return;
+        var s = document.getElementById('services');
+        if(!s) return;
+        var grids = s.querySelectorAll('div');
+        for(var i=0;i<grids.length;i++){
+          var cl = grids[i].className || '';
+          if(cl.indexOf('grid')>-1 && cl.indexOf('cols')>-1){
+            grids[i].style.setProperty('grid-template-columns','1fr','important');
+            grids[i].style.setProperty('width','100%','important');
+          }
+        }
+      }
+      var n=0;
+      var t=setInterval(function(){
+        fixServices();
+        if(++n>20) clearInterval(t);
+      },300);
+      window.addEventListener('resize',fixServices);
+    })();
+    </script>
+    <script>
     (function(){
       var t=setInterval(function(){
         var tk=document.querySelector('a[href*="tiktok.com"]');
