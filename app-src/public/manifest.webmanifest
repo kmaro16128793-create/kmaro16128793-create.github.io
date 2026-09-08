@@ -1,11 +1,22 @@
 {
+  "id": "/app/",
   "name": "Mina Brunch Traiteur",
   "short_name": "Mina Brunch",
-  "description": "Composez votre demande, choisissez votre date et recevez votre devis Mina Brunch.",
-  "start_url": "/app/",
+  "description": "Composez votre demande, choisissez votre date et préparez votre devis Mina Brunch.",
+  "lang": "fr-FR",
+  "start_url": "/app/#/",
   "scope": "/app/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#f5f0e7",
   "theme_color": "#b8843f",
-  "icons": []
+  "categories": ["food", "business"],
+  "icons": [
+    {
+      "src": "/images/logo.jpg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
 }
