@@ -6,6 +6,7 @@ import './styles.css';
 import './hardening.css';
 import './reference-ui.css';
 import './mobile-repair.css';
+import './mobile-visual-hotfix.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
