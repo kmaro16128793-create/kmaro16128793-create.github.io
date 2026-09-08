@@ -2,7 +2,7 @@ name: Mina Brunch app quality gate
 
 on:
   push:
-    branches: [mina-app-absolute]
+    branches: [mina-app-absolute, mina-app-reprise-hardening]
   pull_request:
     branches: [main]
 
@@ -17,9 +17,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Install dependencies
+      - name: Install locked dependencies
         working-directory: app-src
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
+      - name: Record resolved dependency versions
+        working-directory: app-src
+        run: npm list --depth=0
       - name: Typecheck and production build
         working-directory: app-src
         run: npm run build

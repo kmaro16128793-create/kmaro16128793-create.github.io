@@ -26,9 +26,9 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install application dependencies
+      - name: Install locked application dependencies
         working-directory: app-src
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: Build application
         working-directory: app-src
