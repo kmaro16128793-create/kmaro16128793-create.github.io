@@ -2,7 +2,7 @@ name: Mina Brunch app quality gate
 
 on:
   push:
-    branches: [mina-app-absolute]
+    branches: [mina-app-absolute, mina-app-reprise-hardening]
   pull_request:
     branches: [main]
 
@@ -20,9 +20,18 @@ jobs:
       - name: Install dependencies
         working-directory: app-src
         run: npm install --no-audit --no-fund
+      - name: Record resolved dependency versions
+        working-directory: app-src
+        run: npm list --depth=0
       - name: Typecheck and production build
         working-directory: app-src
         run: npm run build
+      - name: Upload generated lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: mina-app-package-lock
+          path: app-src/package-lock.json
+          if-no-files-found: error
       - name: Upload production preview
         uses: actions/upload-artifact@v4
         with:
