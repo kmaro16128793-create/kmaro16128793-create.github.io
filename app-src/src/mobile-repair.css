@@ -1,0 +1,752 @@
+@layer components {
+/* iPhone/mobile repair layer. Loaded last on purpose. */
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overscroll-behavior-x: none;
+}
+
+.ref-app-outer,
+.ref-device,
+.ref-main,
+.ref-screen {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.ref-device {
+  max-width: 430px;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.ref-main,
+.ref-screen {
+  min-height: 100svh;
+  min-height: 100dvh;
+}
+
+.ref-screen *,
+.ref-drawer * {
+  min-width: 0;
+}
+
+.ref-screen img,
+.ref-about-body img,
+.ref-drawer img {
+  max-width: 100%;
+}
+
+.ref-header {
+  height: auto;
+  min-height: 61px;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  padding-top: calc(8px + env(safe-area-inset-top));
+  padding-bottom: 8px;
+  padding-left: max(14px, env(safe-area-inset-left));
+  padding-right: max(14px, env(safe-area-inset-right));
+}
+
+.ref-header-title {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  line-height: 1.05;
+}
+
+.ref-menu-floating {
+  top: calc(8px + env(safe-area-inset-top));
+  left: max(10px, env(safe-area-inset-left));
+}
+
+.ref-sticky {
+  width: 100%;
+  max-width: 430px;
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+
+.ref-cart-summary {
+  width: 100%;
+  max-width: 430px;
+  bottom: calc(67px + env(safe-area-inset-bottom));
+  padding-left: max(18px, env(safe-area-inset-left));
+  padding-right: max(18px, env(safe-area-inset-right));
+}
+
+.ref-product-rail,
+.ref-categories,
+.ref-chip-row {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-inline: contain;
+}
+
+.ref-row b,
+.ref-zone-result p,
+.ref-product-meta strong,
+.ref-cart-row > div:nth-child(2) strong,
+.ref-about-body blockquote,
+.ref-quote-note p {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Real social-network block shared by the drawer and About page. */
+.ref-drawer-contact > a[href*="tiktok.com"] {
+  display: none;
+}
+
+.mina-socials {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.mina-socials-heading {
+  margin-bottom: 9px;
+}
+
+.mina-socials-heading > span {
+  display: block;
+  color: #a39a90;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .15em;
+}
+
+.mina-socials-heading > strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ref-ink);
+  font-family: "Instrument Serif", serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.mina-socials-list {
+  display: grid;
+  gap: 8px;
+}
+
+.mina-social-link {
+  width: 100%;
+  min-height: 52px;
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  margin: 0 !important;
+  padding: 7px 10px;
+  border: 1px solid #ece6df;
+  border-radius: 15px;
+  background: #fff;
+  color: var(--ref-ink) !important;
+  text-decoration: none;
+  box-shadow: 0 5px 16px rgba(48, 40, 33, .05);
+}
+
+.mina-social-icon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+}
+
+.mina-social-icon img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+
+.mina-social-tiktok .mina-social-icon {
+  background: #111;
+}
+
+.mina-social-instagram .mina-social-icon {
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 24%, #dc2743 48%, #cc2366 72%, #bc1888 100%);
+}
+
+.mina-social-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mina-social-copy b {
+  color: #49433d;
+  font-size: 11px;
+  line-height: 1.15;
+}
+
+.mina-social-copy small {
+  margin-top: 3px;
+  color: #8f877e;
+  font-size: 9px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.mina-socials-about {
+  margin: 24px 0 4px;
+  padding: 17px;
+  border-radius: 8px;
+  background: #f7f4ef;
+}
+
+.mina-socials-about .mina-socials-list {
+  grid-template-columns: 1fr;
+}
+
+/* Device-specific mobile correction, not a desktop redesign. */
+@media (max-width: 480px) {
+  .ref-app-outer {
+    display: block;
+    background: #fff;
+  }
+
+  .ref-device {
+    width: 100%;
+    max-width: none;
+    box-shadow: none;
+  }
+
+  .ref-header-title {
+    font-size: clamp(14px, 4.1vw, 17px);
+  }
+
+  .ref-brand.compact strong {
+    font-size: 14px;
+  }
+
+  .ref-brand.compact small {
+    font-size: 6.5px;
+    letter-spacing: .22em;
+  }
+
+  .ref-icon,
+  .ref-bag,
+  .ref-menu-floating,
+  .ref-heart,
+  .ref-mini-plus,
+  .ref-inline-step button,
+  .ref-calendar-head button {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .ref-hero {
+    height: auto;
+    min-height: 165px;
+    margin: 10px max(14px, env(safe-area-inset-right)) 18px max(14px, env(safe-area-inset-left));
+    border-radius: 18px;
+  }
+
+  .ref-hero-copy {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 64%;
+    min-height: 165px;
+    padding: 20px 0 18px 17px;
+  }
+
+  .ref-hero-copy > small {
+    font-size: 8px;
+    line-height: 1.2;
+  }
+
+  .ref-hero-copy h1 {
+    font-size: clamp(27px, 7.8vw, 33px);
+    line-height: .98;
+  }
+
+  .ref-hero-proof {
+    max-width: 100%;
+    flex-wrap: wrap;
+    white-space: normal;
+    gap: 5px 8px;
+    margin-top: 12px;
+    font-size: 7px;
+    line-height: 1.2;
+  }
+
+  .ref-hero img {
+    right: -8%;
+    bottom: 0;
+    width: 53%;
+    height: 100%;
+    border-radius: 40% 0 0 16%;
+  }
+
+  .ref-search {
+    margin-left: max(16px, env(safe-area-inset-left));
+    margin-right: max(16px, env(safe-area-inset-right));
+    min-height: 48px;
+  }
+
+  .ref-search input,
+  .ref-input-field input,
+  .ref-select-field select,
+  .ref-notes textarea {
+    font-size: 16px !important;
+  }
+
+  .ref-search input {
+    line-height: 1.25;
+  }
+
+  .ref-categories,
+  .ref-product-rail,
+  .ref-section-title,
+  .ref-cart-content,
+  .ref-order-summary,
+  .ref-form-stack,
+  .ref-book-content,
+  .ref-zone-content,
+  .ref-quote-content,
+  .ref-about-body {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  .ref-categories button {
+    min-height: 38px;
+    padding: 9px 13px;
+    font-size: 11px;
+  }
+
+  .ref-section-title h2 {
+    font-size: 23px;
+  }
+
+  .ref-product-rail {
+    grid-auto-columns: clamp(108px, 30.5vw, 132px);
+    gap: 10px;
+    scroll-padding-left: max(16px, env(safe-area-inset-left));
+  }
+
+  .ref-product-meta {
+    min-height: 61px;
+  }
+
+  .ref-product-meta strong {
+    min-height: 0;
+    font-size: 14px;
+    line-height: 1.08;
+  }
+
+  .ref-product-meta span {
+    margin-top: 5px;
+    font-size: 10px;
+  }
+
+  .ref-product-stage {
+    height: clamp(275px, 72vw, 330px);
+    padding: 0 16px;
+  }
+
+  .ref-product-stage img {
+    height: clamp(245px, 64vw, 300px);
+  }
+
+  .ref-product-copy {
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: calc(106px + env(safe-area-inset-bottom));
+  }
+
+  .ref-product-copy h1 {
+    font-size: 29px;
+  }
+
+  .ref-price,
+  .ref-product-copy > p,
+  .ref-accordion,
+  .ref-composition,
+  .ref-qty-line,
+  .ref-product-total span {
+    font-size: 11px;
+  }
+
+  .ref-product-total strong {
+    font-size: 19px;
+  }
+
+  .ref-format-card {
+    margin-left: max(16px, env(safe-area-inset-left));
+    margin-right: max(16px, env(safe-area-inset-right));
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    gap: 9px;
+  }
+
+  .ref-format-card small,
+  .ref-format-card span,
+  .ref-format-card > button,
+  .ref-cart-row > div:nth-child(2) span,
+  .ref-order-summary > div,
+  .ref-order-summary b {
+    font-size: 10px;
+  }
+
+  .ref-format-card strong,
+  .ref-cart-row > div:nth-child(2) strong {
+    font-size: 13px;
+  }
+
+  .ref-cart-row {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .ref-cart-row img {
+    width: 46px;
+    height: 46px;
+  }
+
+  .ref-inline-step {
+    height: 44px;
+    border-radius: 22px;
+  }
+
+  .ref-inline-step b {
+    min-width: 26px;
+    font-size: 12px;
+  }
+
+  .ref-add-more {
+    min-height: 44px;
+    height: auto;
+    font-size: 11px;
+  }
+
+  .ref-cart-summary span {
+    font-size: 9px;
+  }
+
+  .ref-cart-summary b {
+    font-size: 18px;
+  }
+
+  .ref-form-stack {
+    padding-bottom: calc(112px + env(safe-area-inset-bottom));
+  }
+
+  .ref-field-block > label,
+  .ref-input-field > span,
+  .ref-select-field > span,
+  .ref-notes > span,
+  .ref-pseudo-field label,
+  .ref-slot-title,
+  .ref-info-section > label,
+  .ref-quote-note > label {
+    margin-top: 15px;
+    margin-bottom: 7px;
+    font-size: 10px;
+    line-height: 1.25;
+    letter-spacing: .08em;
+  }
+
+  .ref-input-field > div,
+  .ref-pseudo-field > span,
+  .ref-select-field select {
+    min-height: 48px;
+    height: auto;
+  }
+
+  .ref-pseudo-field > span {
+    font-size: 14px;
+  }
+
+  .ref-chip-row button {
+    min-height: 40px;
+    padding: 9px 12px;
+    font-size: 11px;
+  }
+
+  .ref-toggle-line {
+    min-height: 58px;
+    height: auto;
+    gap: 12px;
+  }
+
+  .ref-toggle-line > span b {
+    font-size: 13px;
+  }
+
+  .ref-toggle-line > span small {
+    font-size: 10px;
+  }
+
+  .ref-notes textarea {
+    min-height: 96px;
+    line-height: 1.45;
+  }
+
+  .ref-form-error {
+    font-size: 11px;
+  }
+
+  .ref-book-content > p,
+  .ref-zone-result p,
+  .ref-quote-status p,
+  .ref-quote-note p,
+  .ref-empty-state p {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .ref-calendar-head strong {
+    font-size: 18px;
+  }
+
+  .ref-weekdays span {
+    font-size: 10px;
+  }
+
+  .ref-calendar-grid button,
+  .ref-calendar-grid > span {
+    min-height: 43px;
+    height: 43px;
+    font-size: 12px;
+  }
+
+  .ref-slot-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ref-slot-row button {
+    width: auto;
+    min-width: 0;
+    min-height: 44px;
+    height: 44px;
+    font-size: 12px;
+  }
+
+  .ref-address-search {
+    min-height: 48px;
+    height: auto;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .ref-map-hint {
+    width: auto;
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  .ref-map {
+    height: min(58vw, 240px);
+    min-height: 205px;
+  }
+
+  .ref-map-rings {
+    width: min(190px, 58vw);
+    height: min(190px, 58vw);
+  }
+
+  .ref-map-rings:before {
+    width: min(180px, 55vw);
+    height: min(180px, 55vw);
+  }
+
+  .ref-map-rings:after {
+    width: min(125px, 38vw);
+    height: min(125px, 38vw);
+  }
+
+  .ref-zone-result {
+    flex-direction: column;
+  }
+
+  .ref-zone-result h2 {
+    font-size: 21px;
+  }
+
+  .ref-zone-result > span {
+    font-size: 10px;
+  }
+
+  .ref-quote-status h1 {
+    font-size: 24px;
+  }
+
+  .ref-quote-status > small,
+  .ref-info-section > label,
+  .ref-quote-note > label {
+    font-size: 9px;
+  }
+
+  .ref-row {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 7px 0;
+    font-size: 11px;
+  }
+
+  .ref-row b {
+    max-width: 62%;
+    font-size: 11px;
+  }
+
+  .ref-row.strong b {
+    font-size: 16px;
+  }
+
+  .ref-whatsapp {
+    min-height: 48px;
+    font-size: 12px;
+  }
+
+  .ref-return {
+    min-height: 44px;
+    height: auto;
+    font-size: 11px;
+  }
+
+  .ref-about-hero {
+    height: min(78vw, 310px);
+    min-height: 260px;
+  }
+
+  .ref-about-hero > span {
+    font-size: 8px;
+  }
+
+  .ref-about-hero h1 {
+    font-size: clamp(28px, 8vw, 34px);
+  }
+
+  .ref-about-hero p,
+  .ref-sign,
+  .ref-stats span,
+  .ref-about-title small,
+  .ref-trust > small,
+  .ref-trust span,
+  .ref-about-cta p,
+  .ref-about-footer {
+    font-size: 9px;
+  }
+
+  .ref-about-body blockquote {
+    font-size: 18px;
+  }
+
+  .ref-stats b {
+    font-size: 20px;
+  }
+
+  .ref-about-title h2,
+  .ref-trust h2 {
+    font-size: 23px;
+  }
+
+  .ref-about-grid figure {
+    height: min(39vw, 160px);
+  }
+
+  .ref-about-grid figcaption {
+    font-size: 12px;
+  }
+
+  .ref-about-grid figcaption small {
+    font-size: 8px;
+  }
+
+  .ref-about-cta h3 {
+    font-size: 22px;
+  }
+
+  .ref-about-cta .ref-primary {
+    max-width: none;
+    min-height: 46px;
+    font-size: 11px;
+  }
+
+  .ref-drawer-backdrop {
+    min-height: 100dvh;
+  }
+
+  .ref-drawer {
+    width: min(88vw, 350px);
+    height: 100dvh;
+    padding-top: calc(16px + env(safe-area-inset-top));
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+    padding-left: max(16px, env(safe-area-inset-left));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .ref-drawer nav button {
+    min-height: 52px;
+    height: auto;
+    font-size: 18px;
+  }
+
+  .ref-drawer-contact small {
+    font-size: 9px;
+  }
+
+  .ref-drawer-contact > a {
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+  }
+
+  .mina-socials-about {
+    padding: 16px 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .ref-hero-copy {
+    width: 70%;
+  }
+
+  .ref-hero-copy h1 {
+    font-size: 26px;
+  }
+
+  .ref-two-fields {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .ref-product-rail {
+    grid-auto-columns: 34vw;
+  }
+
+  .ref-trust > div {
+    gap: 12px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .ref-header {
+    position: relative;
+  }
+
+  .ref-sticky,
+  .ref-cart-summary {
+    position: sticky;
+    left: auto;
+    bottom: 0;
+    transform: none;
+  }
+}
+}
