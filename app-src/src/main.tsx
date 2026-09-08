@@ -1,17 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import ReferenceApp from './ReferenceApp';
-import SocialPortals from './SocialPortals';
+import VideoExactApp from './VideoExactApp';
 import './styles.css';
 import './hardening.css';
-import './reference-ui.css';
-import './mobile-repair.css';
-import './mobile-visual-hotfix.css';
+import './video-exact.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ReferenceApp />
-    <SocialPortals />
+    <VideoExactApp />
   </React.StrictMode>
 );
 
