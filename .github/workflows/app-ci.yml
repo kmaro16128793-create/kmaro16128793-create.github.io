@@ -23,3 +23,9 @@ jobs:
       - name: Typecheck and production build
         working-directory: app-src
         run: npm run build
+      - name: Upload production preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: mina-app-dist
+          path: app-src/dist
+          if-no-files-found: error
