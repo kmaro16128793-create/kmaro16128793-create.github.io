@@ -167,7 +167,7 @@ export default function VideoExactApp() {
     {view === 'product' && <ProductScreen product={activeProduct} liked={liked.includes(activeProduct.id)} onLike={() => setLiked(v => v.includes(activeProduct.id) ? v.filter(id => id !== activeProduct.id) : [...v, activeProduct.id])} add={add} go={go} back={() => back('home')} />}
     {view === 'cart' && <CartScreen items={detailed} cartCount={cartCount} request={request} changeQty={changeQty} go={go} back={() => back('home')} />}
     {view === 'order' && <OrderScreen items={detailed} cartCount={cartCount} request={request} setRequest={setRequest} booking={booking} go={go} back={() => back('cart')} />}
-    {view === 'date' && <DateScreen booking={booking} setBooking={setBooking} go={go} back={() => back('order')} />}
+    {view === 'date' && <DateScreen booking={booking} setBooking={setBooking} request={request} go={go} back={() => back('order')} />}
     {view === 'zone' && <ZoneScreen request={request} go={go} back={() => back('order')} />}
     {view === 'generating' && <GeneratingScreen go={go} />}
     {view === 'quote' && <QuoteScreen items={detailed} request={request} booking={booking} go={go} back={() => back('zone')} />}
@@ -256,7 +256,7 @@ function OrderScreen({ items, cartCount, request, setRequest, booking, go, back 
       {!ready && booking.date && booking.time && <p className="vx-error">Complétez le contact et l’adresse de livraison avant de continuer.</p>}
       {items.length === 0 && <p className="vx-error">Votre plateau est vide.</p>}
     </section>
-    <div className="vx-fixed-cta"><button className="vx-primary" disabled={!items.length || (Boolean(booking.date && booking.time) && !ready)} onClick={next}>{!booking.date || !booking.time ? 'Réserver votre date' : 'Vérifier la zone de livraison'} <ChevronRight size={18}/></button><small>Aucun paiement n’est effectué dans l’application</small></div>
+    <div className="vx-fixed-cta"><button className="vx-primary" disabled={!items.length || (Boolean(booking.date && booking.time) && !ready)} onClick={next}>{!booking.date || !booking.time ? 'Réservez votre date' : 'Vérifier la zone de livraison'} <ChevronRight size={18}/></button><small>Aucun paiement n’est effectué dans l’application</small></div>
   </main>;
 }
 
@@ -266,20 +266,21 @@ function Input({ label, value, onChange, placeholder, icon, type='text', inputMo
 }
 function Pseudo({ label, value, icon, onClick }: { label: string; value: string; icon: React.ReactNode; onClick: () => void }) { return <button className="vx-pseudo" onClick={onClick}><span>{label}</span><div>{icon}<b>{value}</b></div></button>; }
 
-function DateScreen({ booking, setBooking, go, back }: { booking: Booking; setBooking: React.Dispatch<React.SetStateAction<Booking>>; go: (v: View) => void; back: () => void }) {
+function DateScreen({ booking, setBooking, request, go, back }: { booking: Booking; setBooking: React.Dispatch<React.SetStateAction<Booking>>; request: RequestInfo; go: (v: View) => void; back: () => void }) {
   const today = new Date(); const [cursor, setCursor] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const year = cursor.getFullYear(), month = cursor.getMonth(), holidays = getFrenchHolidaySet(year);
   const first = (new Date(year, month, 1).getDay() + 6) % 7, count = new Date(year, month + 1, 0).getDate();
   const isPast = (d: number) => new Date(year, month, d) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const iso = (d: number) => `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
   const unavailable = (d: number) => { const date = new Date(year, month, d); return isPast(d) || date.getDay() === 0 || holidays.has(iso(d)); };
-  return <main className="vx-screen vx-date vx-bottom-space"><Header title="Réserver votre date" onBack={back}/><section className="vx-date-content"><p>Dimanches et jours fériés indisponibles. Le créneau choisi reste à confirmer par Mina Brunch.</p>
+  const addressReady = request.address.trim().length > 4 && /^\d{5}$/.test(request.postalCode) && request.city.trim().length > 1;
+  return <main className="vx-screen vx-date vx-bottom-space"><Header title="Réservez votre date" onBack={back}/><section className="vx-date-content"><p>Choisissez la date et le créneau de livraison. Dimanches et jours fériés indisponibles.</p>
     <div className="vx-calendar-head"><button onClick={() => setCursor(new Date(year,month-1,1))} disabled={year===today.getFullYear()&&month===today.getMonth()}><ChevronLeft/></button><b>{cursor.toLocaleDateString('fr-FR',{month:'long',year:'numeric'})}</b><button onClick={() => setCursor(new Date(year,month+1,1))}><ChevronRight/></button></div>
     <div className="vx-week">{['L','M','M','J','V','S','D'].map((x,i)=><span key={i}>{x}</span>)}</div>
     <div className="vx-calendar">{Array.from({length:first}).map((_,i)=><i key={`e${i}`}/>) }{Array.from({length:count}).map((_,i)=>{ const d=i+1, value=iso(d), off=unavailable(d); return <button key={d} disabled={off} className={booking.date===value?'selected':''} onClick={() => setBooking(v=>({...v,date:value}))}>{d}</button>; })}</div>
     {booking.date && <div className="vx-available"><Check size={16}/><span><b>Votre date est disponible</b><small>Sous réserve de confirmation finale</small></span></div>}
     <FieldLabel text="CRÉNEAU DE LIVRAISON"/><div className="vx-slots">{timeSlots.map(t => <button key={t} className={booking.time===t?'active':''} onClick={()=>setBooking(v=>({...v,time:t}))}>{t}</button>)}</div>
-  </section><div className="vx-fixed-cta"><button className="vx-primary" disabled={!booking.date||!booking.time} onClick={()=>go('order')}>Valider la date <ChevronRight size={18}/></button></div></main>;
+  </section><div className="vx-fixed-cta"><button className="vx-primary" disabled={!booking.date||!booking.time} onClick={()=>go(addressReady ? 'zone' : 'order')}>{addressReady ? 'Vérifier la zone de livraison' : 'Continuer la demande'} <ChevronRight size={18}/></button></div></main>;
 }
 
 function ZoneScreen({ request, go, back }: { request: RequestInfo; go: (v: View) => void; back: () => void }) {
@@ -303,7 +304,7 @@ function QuoteScreen({ items, request, booking, go, back }: { items: Array<CartI
     doc.setTextColor(55,48,41); doc.setFont('times','bold'); doc.setFontSize(23); doc.text('MINA BRUNCH',left,y); y+=6;
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(168,124,59); doc.text('TRAITEUR ÉVÉNEMENTIEL · DEMANDE DE DEVIS',left,y); y+=7; doc.setDrawColor(198,154,75); doc.line(left,y,right,y); y+=10;
     doc.setTextColor(55,48,41); doc.setFontSize(9); doc.text(`Devis ${quoteId}`,left,y); doc.text(new Date().toLocaleDateString('fr-FR'),right,y,{align:'right'}); y+=10;
-    const info=[`Client : ${request.name || '—'}`,`Entreprise : ${request.company || '—'}`,`Téléphone : ${request.phone || '—'}`,`E-mail : ${request.email || '—'}`,`Événement : ${request.eventType} · ${request.guestCount || '—'} invités`,`Date : ${dateLabel(booking.date)} · ${booking.time || '—'}`,`Livraison : ${request.address}, ${request.postalCode} ${request.city}`];
+    const info=[`Client : ${request.name || '—'}`,`Entreprise : ${request.company || '—'}`,`Téléphone : ${request.phone || '—'}`,`E-mail : ${request.email || '—'}`,`Budget indicatif : ${request.budget || 'À définir'}`,`Facturation : ${request.invoice ? 'Facture demandée' : 'Non demandée'}`,`Événement : ${request.eventType} · ${request.guestCount || '—'} invités`,`Date : ${dateLabel(booking.date)} · ${booking.time || '—'}`,`Livraison : ${request.address}, ${request.postalCode} ${request.city}`];
     info.forEach(line=>{ const lines=doc.splitTextToSize(line,170); doc.text(lines,left,y); y+=lines.length*4.6; }); y+=6;
     doc.setFont('times','bold'); doc.setFontSize(13); doc.text('Votre sélection',left,y); y+=7; doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
     items.forEach(({product,qty})=>{ if(y>255){doc.addPage();y=20;} doc.text(product.name,left,y); doc.text(`x${qty}`,150,y); doc.text('Sur devis',right,y,{align:'right'}); y+=7; });
@@ -312,9 +313,9 @@ function QuoteScreen({ items, request, booking, go, back }: { items: Array<CartI
     doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(100,92,83); doc.text('Tarifs, disponibilité et frais de livraison à confirmer par Mina Brunch.',left,y+10,{maxWidth:170});
     doc.save(`devis-${quoteId.toLowerCase()}.pdf`);
   };
-  const whatsapp=()=>{ const lines=items.map(x=>`• ${x.product.name} x${x.qty}`).join('\n'); const text=`Bonjour Mina Brunch, je souhaite confirmer ma demande ${quoteId}.\n\n${lines}\n\nÉvénement : ${request.eventType} · ${request.guestCount||'—'} invités\nDate : ${dateLabel(booking.date)} · ${booking.time||'—'}\nAdresse : ${request.address}, ${request.postalCode} ${request.city}\nContact : ${request.name} · ${request.phone}${request.notes?`\nPrécisions : ${request.notes}`:''}\n\nJe comprends que le tarif et la livraison restent à confirmer.`; open(`https://wa.me/${business.phoneWhatsApp}?text=${encodeURIComponent(text)}`,'_blank','noopener,noreferrer'); };
+  const whatsapp=()=>{ const lines=items.map(x=>`• ${x.product.name} x${x.qty}`).join('\n'); const text=`Bonjour Mina Brunch, je souhaite confirmer ma demande ${quoteId}.\n\n${lines}\n\nÉvénement : ${request.eventType} · ${request.guestCount||'—'} invités\nDate : ${dateLabel(booking.date)} · ${booking.time||'—'}\nAdresse : ${request.address}, ${request.postalCode} ${request.city}\nContact : ${request.name} · ${request.phone}${request.email?` · ${request.email}`:''}\nBudget indicatif : ${request.budget||'À définir'}\nFacture : ${request.invoice?'Oui':'Non'}${request.notes?`\nPrécisions : ${request.notes}`:''}\n\nJe comprends que le tarif et la livraison restent à confirmer.`; open(`https://wa.me/${business.phoneWhatsApp}?text=${encodeURIComponent(text)}`,'_blank','noopener,noreferrer'); };
   return <main className="vx-screen vx-quote"><Header title="Votre devis" onBack={back}/><section className="vx-quote-content"><div className="vx-success"><i><Check size={22}/></i><span>VOTRE DEVIS</span><h1>Devis créé avec succès</h1><p>Voici le récapitulatif de votre demande. Mina Brunch vous confirme ensuite le tarif et le créneau.</p></div>
-    <section className="vx-quote-section"><label>DEVIS</label><Row k="Référence" v={quoteId}/><Row k="Client" v={request.name||'—'}/><Row k="Entreprise" v={request.company||'—'}/><Row k="Événement" v={`${request.eventType} · ${request.guestCount||'—'} invités`}/><Row k="Date" v={`${dateLabel(booking.date)} · ${booking.time||'—'}`}/><Row k="Livraison" v={`${request.postalCode} ${request.city}`}/></section>
+    <section className="vx-quote-section"><label>DEVIS</label><Row k="Référence" v={quoteId}/><Row k="Entreprise" v={request.company||'—'}/><Row k="Contact" v={request.name||'—'}/><Row k="E-mail" v={request.email||'—'}/><Row k="Téléphone" v={request.phone||'—'}/><Row k="Événement" v={`${request.eventType} · ${request.guestCount||'—'} invités`}/><Row k="Date" v={`${dateLabel(booking.date)} · ${booking.time||'—'}`}/><Row k="Livraison" v={`${request.postalCode} ${request.city}`}/><Row k="Budget indicatif" v={request.budget||'À définir'}/><Row k="Facture" v={request.invoice?'Demandée':'Non demandée'}/></section>
     <section className="vx-quote-section"><label>VOTRE SÉLECTION</label>{items.map(({product,qty})=><Row key={product.id} k={`${product.name} × ${qty}`} v="Sur devis"/>)}<Row k="Sous-total" v="Sur devis" strong/><Row k="Livraison" v="À confirmer"/><Row k="Total estimé" v="Sur devis" strong/></section>
     {request.notes && <section className="vx-quote-section"><label>BESOINS PARTICULIERS / ALLERGIES</label><p className="vx-quote-note">{request.notes}</p></section>}
     <div className="vx-quote-actions"><button className="vx-primary" onClick={download}><FileDown size={17}/> Télécharger le devis PDF</button><button className="vx-outline" onClick={whatsapp}>Envoyer à Mina Brunch</button><button className="vx-text" onClick={()=>go('home')}>Retour à l’accueil</button></div>
