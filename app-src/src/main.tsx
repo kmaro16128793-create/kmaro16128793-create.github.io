@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import VideoExactApp from './VideoExactApp';
+import SafetyBoundary from './SafetyBoundary';
 import './styles.css';
 import './hardening.css';
 import './video-exact.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <VideoExactApp />
+    <SafetyBoundary>
+      <VideoExactApp />
+    </SafetyBoundary>
   </React.StrictMode>
 );
 
