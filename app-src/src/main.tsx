@@ -2,14 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import VideoExactApp from './VideoExactApp';
 import SafetyBoundary from './SafetyBoundary';
+import DeliveryExperience from './DeliveryExperience';
 import './styles.css';
 import './hardening.css';
 import './video-exact.css';
+import './delivery-experience.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <SafetyBoundary>
-      <VideoExactApp />
+      <DeliveryExperience>
+        <VideoExactApp />
+      </DeliveryExperience>
     </SafetyBoundary>
   </React.StrictMode>
 );
