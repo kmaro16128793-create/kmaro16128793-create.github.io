@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { jsPDF } from 'jspdf';
 import { Check, Mail, Send, TriangleAlert } from 'lucide-react';
-import { business, products } from './data';
+import { products } from './data';
 
 type StoredCartItem = { productId: string; qty: number };
 type StoredRequest = {
@@ -15,17 +15,7 @@ type DeliveryInfo = {
 };
 type EmailState = 'idle' | 'sending' | 'sent' | 'needs-config' | 'error';
 
-type EmailJsConfig = {
-  serviceId: string;
-  templateId: string;
-  publicKey: string;
-};
-
-declare global {
-  interface Window {
-    __MINA_EMAILJS__?: Partial<EmailJsConfig>;
-  }
-}
+const MAIL_API = 'https://mina-brunch-mail-service-srzp7k.v2.appdeploy.ai/api/send-quote';
 
 function safeJson<T>(key: string, fallback: T): T {
   try {
@@ -48,6 +38,10 @@ function getQuoteId() {
   }
 }
 
+function validEmail(value = '') {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value.trim());
+}
+
 function dateLabel(value?: string) {
   if (!value) return 'À choisir';
   return new Date(`${value}T12:00:00`).toLocaleDateString('fr-FR', {
@@ -65,17 +59,6 @@ function minimumLabel(delivery: DeliveryInfo) {
   return typeof delivery.minimum === 'number' ? `${delivery.minimum.toFixed(2).replace('.', ',')} €` : 'À confirmer';
 }
 
-function readEmailConfig(): EmailJsConfig | null {
-  const runtime = window.__MINA_EMAILJS__ ?? {};
-  const env = ((import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {});
-  const config = {
-    serviceId: runtime.serviceId || env.VITE_MINA_EMAILJS_SERVICE_ID || '',
-    templateId: runtime.templateId || env.VITE_MINA_EMAILJS_TEMPLATE_ID || '',
-    publicKey: runtime.publicKey || env.VITE_MINA_EMAILJS_PUBLIC_KEY || ''
-  };
-  return config.serviceId && config.templateId && config.publicKey ? config : null;
-}
-
 function quoteSnapshot() {
   const cart = safeJson<StoredCartItem[]>('mina-cart', []);
   const request = safeJson<StoredRequest>('mina-video-request', {});
@@ -88,7 +71,7 @@ function quoteIsReady() {
   const { cart, request, booking } = quoteSnapshot();
   return cart.length > 0
     && Boolean(request.name?.trim())
-    && Boolean(request.email?.trim())
+    && validEmail(request.email)
     && Boolean(request.phone?.trim())
     && Boolean(request.address?.trim())
     && Boolean(request.postalCode?.trim())
@@ -158,48 +141,45 @@ function buildPdfDataUri(quoteId: string) {
   return doc.output('datauristring');
 }
 
-function buildEmailParams(quoteId: string) {
+function buildEmailPayload(quoteId: string) {
   const { cart, request, booking, delivery } = quoteSnapshot();
   const detailed = cart.map(item => ({ ...item, product: products.find(p => p.id === item.productId) })).filter(x => x.product);
   const items = detailed.map(({ product, qty }) => `${product?.name || 'Création'} × ${qty} — Sur devis`).join('\n');
   const distance = typeof delivery.distanceKm === 'number' ? `${delivery.distanceKm.toFixed(1).replace('.', ',')} km` : 'À confirmer';
+  const pdf = buildPdfDataUri(quoteId);
   return {
-    to_email: request.email || '',
-    to_name: request.name || 'Client Mina Brunch',
-    reply_to: business.email,
-    quote_id: quoteId,
+    quoteId,
+    toEmail: request.email || '',
+    customerName: request.name || 'Client Mina Brunch',
     company: request.company || '—',
-    event_type: request.eventType || '—',
-    guest_count: request.guestCount || '—',
-    event_date: dateLabel(booking.date),
-    event_time: booking.time || '—',
-    delivery_address: [request.address, request.postalCode, request.city].filter(Boolean).join(', '),
-    delivery_zone: delivery.zone ? `Zone ${delivery.zone}` : 'À confirmer',
-    delivery_distance: distance,
-    delivery_minimum: minimumLabel(delivery),
-    delivery_fee: deliveryFeeLabel(delivery),
-    budget: request.budget || 'À définir',
-    invoice: request.invoice ? 'Oui' : 'Non',
+    eventType: request.eventType || '—',
+    guestCount: request.guestCount || '—',
+    eventDate: dateLabel(booking.date),
+    eventTime: booking.time || '—',
+    deliveryAddress: [request.address, request.postalCode, request.city].filter(Boolean).join(', '),
+    deliveryZone: delivery.zone ? `Zone ${delivery.zone}` : 'À confirmer',
+    deliveryDistance: distance,
+    deliveryMinimum: minimumLabel(delivery),
+    deliveryFee: deliveryFeeLabel(delivery),
     notes: request.notes || 'Aucune précision',
     items,
-    quote_pdf: buildPdfDataUri(quoteId),
-    website: 'https://kmaro16128793-create.github.io/app/'
+    website: 'https://kmaro16128793-create.github.io/app/',
+    pdfBase64: pdf.includes(',') ? pdf.split(',')[1] : ''
   };
 }
 
-async function sendAutomaticQuoteEmail(config: EmailJsConfig, quoteId: string) {
-  const payload = {
-    service_id: config.serviceId,
-    template_id: config.templateId,
-    user_id: config.publicKey,
-    template_params: buildEmailParams(quoteId)
-  };
-  const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+async function sendAutomaticQuoteEmail(quoteId: string) {
+  const response = await fetch(MAIL_API, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(buildEmailPayload(quoteId))
   });
-  if (!response.ok) throw new Error(`emailjs-${response.status}`);
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({})) as { error?: string };
+    const error = new Error(data.error || `mail-${response.status}`) as Error & { code?: string };
+    error.code = data.error;
+    throw error;
+  }
 }
 
 function openEmailFallback() {
@@ -247,23 +227,21 @@ export default function AudioGoldMasterExperience({ children }: { children: Reac
       }
     } catch { /* no-op */ }
 
-    const config = readEmailConfig();
-    if (!config) {
-      setState('needs-config');
-      setMessage(`Envoi automatique prêt pour ${email}, mais le service e-mail doit être connecté une seule fois.`);
-      return;
-    }
-
     let cancelled = false;
     setState('sending'); setMessage(`Envoi automatique du devis à ${email}…`);
-    sendAutomaticQuoteEmail(config, quoteId)
+    sendAutomaticQuoteEmail(quoteId)
       .then(() => {
         if (cancelled) return;
         try { sessionStorage.setItem(sentKey, '1'); } catch { /* no-op */ }
         setState('sent'); setMessage(`Devis envoyé automatiquement à ${email}`);
       })
-      .catch(() => {
+      .catch((error: Error & { code?: string }) => {
         if (cancelled) return;
+        if (error.code === 'email_not_configured') {
+          setState('needs-config');
+          setMessage(`Le service d’envoi sécurisé est installé mais sa clé Resend doit encore être activée.`);
+          return;
+        }
         setState('error'); setMessage(`L’envoi automatique vers ${email} n’a pas abouti. Utilisez l’envoi e-mail de secours.`);
       });
     return () => { cancelled = true; };
@@ -273,7 +251,7 @@ export default function AudioGoldMasterExperience({ children }: { children: Reac
     {children}
     {hash === '#/quote' && state !== 'idle' && <aside className={`agm-email agm-${state}`} role="status" aria-live="polite">
       <div className="agm-email-icon">{state === 'sent' ? <Check size={18}/> : state === 'error' ? <TriangleAlert size={18}/> : <Mail size={18}/>}</div>
-      <div className="agm-email-copy"><small>ENVOI DU DEVIS</small><b>{state === 'sending' ? 'Envoi automatique…' : state === 'sent' ? 'E-mail envoyé' : state === 'needs-config' ? 'E-mail automatique à activer' : 'Envoi à relancer'}</b><span>{message}</span></div>
+      <div className="agm-email-copy"><small>ENVOI DU DEVIS</small><b>{state === 'sending' ? 'Envoi automatique…' : state === 'sent' ? 'E-mail envoyé' : state === 'needs-config' ? 'Resend à activer' : 'Envoi à relancer'}</b><span>{message}</span></div>
       {(state === 'needs-config' || state === 'error') && <button onClick={openEmailFallback}><Send size={15}/> Envoyer par e-mail</button>}
     </aside>}
   </>;
